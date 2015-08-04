@@ -5,16 +5,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
 
     <body>
 
         <div class="container">
             <div class="row" style="margin-top: 10%;">
-
-                <form class="form-inline" role="form">
+                <div class="form-inline">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="product_name">Product name :</label>
@@ -36,10 +33,9 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-default">ADD</button>
+                        <button class="btn btn-default" id="add_to_cart">ADD</button>
                     </div>
-                </form>
-
+                </div>
             </div>
 
             <hr/>
@@ -56,24 +52,95 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr>
-                                <td>Mouse</td>
-                                <td>500</td>
-                                <td>1</td>
-                            </tr>
-                        </tbody>
+                        <tbody class="product_list"></tbody>
                     </table>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="product_name">Total</label><br/>
-                        <span style="margin-bottom: 5%;">500 Tk.</span><br/><br/>
+                        <span style="margin-bottom: 5%;" id="total_price">500 Tk.</span><br/><br/>
                         <button class="btn btn-success">PRINT</button>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <script>
+            var productName = document.querySelector("#product_name");
+            var pprice = document.querySelector("#price");
+            var pquantity = document.querySelector("#quantity");
+            var addToCart = document.querySelector("#add_to_cart");
+            var productList = document.querySelector(".product_list");
+            var totalPrices = document.querySelector("#total_price");
+            var prices = 0;
+            
+            // add action event listener
+            addToCart.addEventListener("click", productAddToCart);
+            
+            // productAddToCart function
+            function productAddToCart(){
+                // name of product
+                var name = productName.value;
+                // product price
+                var price = pprice.value;
+                // product price
+                var quantity = pquantity.value;
+                // subtotal of prooduct price
+                var subTotal = +(price*quantity);
+                
+                // check condition
+                // if prices grater than 0, then prices(previous) price + new product price
+                // else new price(quantiry * unit price)
+                if(prices>0){
+                    prices = (prices+subTotal);
+                } else {
+                    prices = +(price*quantity);
+                }
+                
+                // blank the name field
+                name.value = '';
+                // blank the price field
+                price.value = '';
+                // blank the quantity field
+                quantity.value = '';
+                
+                // add row
+                var tr = document.createElement("tr");
+                // add first column
+                var td1 = document.createElement("td");
+                // add second column
+                var td2 = document.createElement("td");
+                // add third column
+                var td3 = document.createElement("td");
+                
+                // value write in first column
+                td1.innerHTML = name;
+                // value write in second column
+                td2.innerHTML = price;
+                // value write in third column
+                td3.innerHTML = quantity;
+                // value write in total price area
+                totalPrices.innerHTML = prices;
+                
+                // append row
+                productList.appendChild(tr);
+                // append first column
+                productList.appendChild(td1);
+                // append second column
+                productList.appendChild(td2);
+                // append third column
+                productList.appendChild(td3);
+            }
+            
+            // print function
+            function print(){
+                // code start from here.....
+            }
+            
+        </script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </body>
 </html>
